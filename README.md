@@ -1,1 +1,1 @@
-# 254034-student.pwr.edu.pl
+# 254034/ProgramowanieObiektowe
