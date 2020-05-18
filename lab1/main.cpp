@@ -2,7 +2,6 @@
 #include "menu.cpp"
 #include "tablica.cpp"
 #include "tablica_wysw.cpp"
-#include "tablica_zapis.cpp"
 using namespace std;
 
 int main()
@@ -12,7 +11,6 @@ int main()
 	int odpowiedz_uzytkownika;
 	int rozmiar_x = 2;
 	int rozmiar_y = 2;
-	string nazwa_pliku;
 	tablica = stworz_tablice(rozmiar_x, rozmiar_y);
 
 	while (!zakonczyc_program)
@@ -78,24 +76,6 @@ int main()
 			wyswietl_element(tablica, wspolrzedna_x, wspolrzedna_y);
 			break;
 		case 4:
-			wyswietl_wszystkie_elementy(tablica, rozmiar_x, rozmiar_y);
-			break;
-		case 5:
-			cout << "Podaj nazwe pliku do zapisu: " << endl;
-			cin >> nazwa_pliku;
-			zapisz_do_pliku(nazwa_pliku, tablica, rozmiar_x, rozmiar_y);
-			break;
-		case 6:
-			int liczba_wierszy, liczba_kolumn;
-			cout << "Podaj nazwe pliku do odczytu: " << endl;
-			cin >> nazwa_pliku;
-			cout << "Podaj liczbe wierszy tablicy z pliku: " << endl;
-			cin >> liczba_wierszy;
-			cout << "Podaj liczbe kolumn tablicy z pliku: " << endl;
-			cin >> liczba_kolumn;
-			tablica = wczytaj_z_pliku(nazwa_pliku, liczba_wierszy, liczba_kolumn);
-			rozmiar_x = liczba_wierszy;
-			rozmiar_y = liczba_kolumn;
 			wyswietl_wszystkie_elementy(tablica, rozmiar_x, rozmiar_y);
 			break;
 		case 0:

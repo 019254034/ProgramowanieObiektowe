@@ -11,8 +11,6 @@ namespace
 		cout << "2. Zaktualizowac wybrany element tablicy" << endl;
 		cout << "3. Wyswietlic konkretny element tablicy" << endl;
 		cout << "4. Wyswietl wszystkie elementy tablicy" << endl;
-		cout << "5. Zapisz tablice do pliku" << endl;
-		cout << "6. Wczytaj tablice z pliku" << endl;
 		cout << "0. Zakoncz program" << endl;
 	}
 }

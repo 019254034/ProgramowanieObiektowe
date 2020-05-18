@@ -1,26 +1,25 @@
 #include <iostream>
 #include "menu.cpp"
-#include "tablica.cpp"
+#include "tablica_operacje.cpp"
 #include "tablica_wysw.cpp"
 #include "tablica_zapis.cpp"
+#include "Tablica.h"
 using namespace std;
 
 int main()
 {
-	int** tablica;
 	bool zakonczyc_program = false;
 	int odpowiedz_uzytkownika;
-	int rozmiar_x = 2;
-	int rozmiar_y = 2;
+	int druga_odp;
 	string nazwa_pliku;
-	tablica = stworz_tablice(rozmiar_x, rozmiar_y);
+	Tablica tab = stworz_tablice(2, 2);
 
 	while (!zakonczyc_program)
 	{
-		glowne_menu(rozmiar_x, rozmiar_y);
+		glowne_menu(tab);
 		cin >> odpowiedz_uzytkownika;
 
-		switch (odpowiedz_uzytkownika) 
+		switch (odpowiedz_uzytkownika)
 		{
 		case 1:
 			int nowy_rozmiar_x, nowy_rozmiar_y;
@@ -33,7 +32,7 @@ int main()
 				cout << "Podano niepoprawny rozmiar!" << endl;
 				break;
 			}
-			else if (nowy_rozmiar_x < rozmiar_x || nowy_rozmiar_y < rozmiar_y)
+			else if (nowy_rozmiar_x < tab.liczba_wierszy || nowy_rozmiar_y < tab.liczba_kolumn)
 			{
 				cout << "Zmieniasz rozmiar tablicy na mniejszy, stracisz dane. Czy chcesz kontynuowac? [y/n]" << endl;
 				string odp;
@@ -43,9 +42,9 @@ int main()
 					break;
 				}
 			}
-			tablica = zmien_rozmiar(tablica, nowy_rozmiar_x, nowy_rozmiar_y, rozmiar_x, rozmiar_y);
-			rozmiar_x = nowy_rozmiar_x;
-			rozmiar_y = nowy_rozmiar_y;
+			tab.t = zmien_rozmiar(tab, nowy_rozmiar_x, nowy_rozmiar_y);
+			tab.liczba_wierszy = nowy_rozmiar_x;
+			tab.liczba_kolumn = nowy_rozmiar_y;
 			cout << endl;
 			break;
 		case 2:
@@ -56,12 +55,12 @@ int main()
 			cin >> y;
 			cout << "Podaj nowa wartosc elementu: " << endl;
 			cin >> nowa_wartosc;
-			if (x < 0 || y < 0 || x >= rozmiar_x || y >= rozmiar_y)
+			if (x < 0 || y < 0 || x >= tab.liczba_wierszy || y >= tab.liczba_kolumn)
 			{
 				cout << "W tablicy nie ma elementu o wspolrzednych (" << x << "," << y << ")!" << endl;
 				break;
 			}
-			tablica = aktualizuj_element(tablica, x, y, nowa_wartosc);
+			tab.t = aktualizuj_element(tab.t, x, y, nowa_wartosc);
 			cout << endl;
 			break;
 		case 3:
@@ -70,33 +69,73 @@ int main()
 			cin >> wspolrzedna_x;
 			cout << "Podaj wspolrzedna y elementu do wyswietlenia: " << endl;
 			cin >> wspolrzedna_y;
-			if (wspolrzedna_x < 0 || wspolrzedna_y < 0 || wspolrzedna_x >= rozmiar_x || wspolrzedna_y >= rozmiar_y)
+			if (wspolrzedna_x < 0 || wspolrzedna_y < 0 || wspolrzedna_x >= tab.liczba_wierszy || wspolrzedna_y >= tab.liczba_kolumn)
 			{
 				cout << "W tablicy nie ma elementu o wspolrzednych (" << wspolrzedna_x << "," << wspolrzedna_y << ")!" << endl;
 				break;
 			}
-			wyswietl_element(tablica, wspolrzedna_x, wspolrzedna_y);
+			wyswietl_element(tab, wspolrzedna_x, wspolrzedna_y);
 			break;
 		case 4:
-			wyswietl_wszystkie_elementy(tablica, rozmiar_x, rozmiar_y);
+			wyswietl_wszystkie_elementy(tab);
 			break;
 		case 5:
 			cout << "Podaj nazwe pliku do zapisu: " << endl;
 			cin >> nazwa_pliku;
-			zapisz_do_pliku(nazwa_pliku, tablica, rozmiar_x, rozmiar_y);
+			zapisz_do_pliku(nazwa_pliku, tab);
 			break;
 		case 6:
-			int liczba_wierszy, liczba_kolumn;
+			int wiersze, kolumny;
 			cout << "Podaj nazwe pliku do odczytu: " << endl;
 			cin >> nazwa_pliku;
 			cout << "Podaj liczbe wierszy tablicy z pliku: " << endl;
-			cin >> liczba_wierszy;
+			cin >> wiersze;
 			cout << "Podaj liczbe kolumn tablicy z pliku: " << endl;
-			cin >> liczba_kolumn;
-			tablica = wczytaj_z_pliku(nazwa_pliku, liczba_wierszy, liczba_kolumn);
-			rozmiar_x = liczba_wierszy;
-			rozmiar_y = liczba_kolumn;
-			wyswietl_wszystkie_elementy(tablica, rozmiar_x, rozmiar_y);
+			cin >> kolumny;
+			tab.t = wczytaj_z_pliku(nazwa_pliku, wiersze, kolumny);
+			tab.liczba_wierszy = wiersze;
+			tab.liczba_wierszy = kolumny;
+			wyswietl_wszystkie_elementy(tab);
+			break;
+		case 7:
+			cout << "Podaj nr kolumny do zsumowania wartosci: " << endl;
+			cin >> druga_odp;
+			cout << "Suma elementow z kolumny " << druga_odp << ": " << sumuj_elementy_kolumny(tab, druga_odp) << endl;
+			break;
+		case 8:
+			cout << "Podaj nr wiersza do zsumowania wartosci: " << endl;
+			cin >> druga_odp;
+			cout << "Suma elementow z wiersza " << druga_odp << ": " << sumuj_elementy_wiersza(tab, druga_odp) << endl;
+			break;
+		case 9:
+			cout << "Podaj nr kolumny do obliczenia sredniej wszystkich wartosci: " << endl;
+			cin >> druga_odp;
+			cout << "Srednia wartosc elementow z kolumny " << druga_odp << ": " << srednia_elementow_kolumny(tab, druga_odp) << endl;
+			break;
+		case 10:
+			cout << "Podaj nr wiersza do obliczenia sredniej wszystkich wartosci: " << endl;
+			cin >> druga_odp;
+			cout << "Srednia wartosc elementow z wiersza " << druga_odp << ": " << srednia_elementow_wiersza(tab, druga_odp) << endl;
+			break;
+		case 11:
+			cout << "Podaj nr kolumny do wskazania najmniejszej wartosci: " << endl;
+			cin >> druga_odp;
+			cout << "Najmnijesza wartosc z kolumny " << druga_odp << ": " << najmniejsza_z_wiersza(tab, druga_odp) << endl;
+			break;
+		case 12:
+			cout << "Podaj nr wiersza do wskazania najmniejszej wartosci: " << endl;
+			cin >> druga_odp;
+			cout << "Najmniejsza wartosc z wiersza " << druga_odp << ": " << najwieksza_z_wiersza(tab, druga_odp) << endl;
+			break;
+		case 13:
+			cout << "Podaj nr kolumny do wskazania najwiekszej wartosci: " << endl;
+			cin >> druga_odp;
+			cout << "Najwieksza wartosc z kolumny " << druga_odp << ": " << najmniejsza_z_kolumny(tab, druga_odp) << endl;
+			break;
+		case 14:
+			cout << "Podaj nr wiersza do wskazania najwiekszej wartosci: " << endl;
+			cin >> druga_odp;
+			cout << "Najwieksza wartosc z wiersza " << druga_odp << ": " << najwieksza_z_kolumny(tab, druga_odp) << endl;
 			break;
 		case 0:
 		default:

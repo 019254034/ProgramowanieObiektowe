@@ -2,24 +2,23 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include "Tablica.h"
 using namespace std;
 
 namespace
 {
-	void zapisz_do_pliku(string nazwa_pliku, Tablica tablica)
+	void zapisz_do_pliku(string nazwa_pliku, int** tablica, int rozmiar_x, int rozmiar_y)
 	{
 		ofstream plik;
 		plik.open(nazwa_pliku, ios::out);
-		if (plik.is_open())
+		if (plik.is_open()) 
 		{
 			cout << "Otwarto plik " << nazwa_pliku << endl;
-			for (int i = 0; i < tablica.liczba_wierszy; i++)
+			for (int i = 0; i < rozmiar_x; i++)
 			{
-				for (int j = 0; j < tablica.liczba_kolumn; j++)
+				for (int j = 0; j < rozmiar_y; j++)
 				{
-					plik << tablica.t[i][j];
-					if (j != tablica.liczba_kolumn - 1)
+					plik << tablica[i][j];
+					if (j != rozmiar_y - 1)
 					{
 						plik << ",";
 					}
@@ -28,7 +27,7 @@ namespace
 			}
 			plik.close();
 		}
-		else
+		else 
 		{
 			cout << "Nie mozna otworzyc pliku " << nazwa_pliku << endl;
 		}

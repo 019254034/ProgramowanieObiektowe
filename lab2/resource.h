@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by lab3.rc
+// Used by lab2.rc
 
 // Nastêpne wartoœci domyœlne dla nowych obiektów
 // 
